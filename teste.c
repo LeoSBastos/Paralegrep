@@ -1,53 +1,65 @@
 #include <stdio.h>
-#include <string.h>
-#include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <pthread.h>
+#include <signal.h>
 
-pthread_t tid[2];
-int counter;
-pthread_mutex_t lock;
+#define BUFFER_SIZE 1000
 
-void *trythis(void *arg)
+int fd[2];
+
+void *operaria(char *file)
 {
-    pthread_mutex_lock(&lock);
+    FILE *fptr;
+    char path[100];
+    char word[50];
+    int wCount;
 
-    unsigned long i = 0;
-    counter += 1;
-    printf("\n Job %d has started\n", counter);
+    printf("word:\n");
+    scanf("%s", word);
 
-    for (i = 0; i < (0xFFFFFFFF); i++)
-        ;
+    fptr = fopen(file, "r");
+    if (fptr == NULL)
+    {
+        printf("Unable to open file.\n");
+        printf("Please check you have read/write previleges.\n");
+        exit(EXIT_FAILURE);
+    }
 
-    printf("\n Job %d has finished\n", counter);
+    char str[BUFFER_SIZE];
+    char *pos;
+    int index, count;
+    count = 0;
+    while ((fgets(str, BUFFER_SIZE, fptr)) != NULL)
+    {
+        index = 0;
+        while ((pos = strstr(str + index, word)) != NULL)
+        {
+            index = (pos - str) + 1;
+            count++;
+        }
+    }
 
-    pthread_mutex_unlock(&lock);
-
-    return NULL;
+    printf("'%s' is found %d times in file.\n", word, count);
+    fclose(fptr);
+    pause();
 }
 
-int main(void)
+void main()
 {
-    int i = 0;
-    int error;
+    char file[100] = "teste.txt";
+    int len = strlen(file) + 1;
+    write(fd[1], file, len);
+    ler(arquivo(len));
 
-    if (pthread_mutex_init(&lock, NULL) != 0)
+    pthread_t operarias[10];
+    for (int i = 0; i < 10; i++)
     {
-        printf("\n mutex init has failed\n");
-        return 1;
+        pthread_create(&operarias, NULL, operaria("./fileset/teste.txt"), NULL);
     }
-
-    while (i < 2)
-    {
-        error = pthread_create(&(tid[i]), NULL, &trythis, NULL);
-        if (error != 0)
-            printf("\nThread can't be created :[%s]", strerror(error));
-        i++;
-    }
-
-    pthread_join(tid[0], NULL);
-    pthread_join(tid[1], NULL);
-    pthread_mutex_destroy(&lock);
-
-    return 0;
+    //pthread_kill(operaria, SIGCONT);
 }
