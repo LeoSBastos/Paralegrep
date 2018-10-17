@@ -7,10 +7,27 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <signal.h>
-
+#include "arvore.h"
 #define BUFFER_SIZE 1000
 
 int fd[2];
+
+node **criarNo(int val, char *filename)
+{
+    node *temp = NULL;
+    temp = (node *)malloc(sizeof(node));
+    temp->left = temp->right = NULL;
+    temp->data = val;
+    temp->fileName = filename;
+    return &temp;
+}
+insert(&root, criarNo(9, "fodase"));
+insert(&root, criarNo(4, "fodase2"));
+insert(&root, criarNo(15, "fodas3"));
+insert(&root, criarNo(6, "fod4se"));
+insert(&root, criarNo(12, "foda5e"));
+insert(&root, criarNo(17, "foda6"));
+insert(&root, criarNo(2, "fodase7"));
 
 void *operaria(char *file)
 {

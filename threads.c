@@ -7,22 +7,22 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <signal.h>
-
+#include "arvore.h"
 #define BUFFER_SIZE 1000
 
-int fd[2];
+int pipeoptoran[2];
 
-void *operaria(char *file)
+void *operaria(char *filename)
 {
     FILE *fptr;
-    char path[100];
-    char word[50];
+    char path[100] = "./fileset";
+    char word[50] = "foda";
     int wCount;
+    strcat(path, filename);
+    //printf("word:\n");
+    //scanf("%s", word);
 
-    printf("word:\n");
-    scanf("%s", word);
-
-    fptr = fopen(file, "r");
+    fptr = fopen(path, "r");
     if (fptr == NULL)
     {
         printf("Unable to open file.\n");
@@ -45,21 +45,33 @@ void *operaria(char *file)
     }
 
     printf("'%s' is found %d times in file.\n", word, count);
+    //criaDados("");
     fclose(fptr);
+
     pause();
 }
 
-// void main()
-// {
-//     // char file[100] = "teste.txt";
-//     // int len = strlen(file) + 1;
-//     // write(fd[1], file, len);
-//     // ler(arquivo(len));
+void ranking()
+{
+    while (1)
+    {
+        //pipeoptoran[0]
+    }
+}
 
-//     pthread_t operarias;
-//     // for(int i=0;i<10;i++){
-//     // pthread_create(&operarias, NULL, operaria, NULL);
-//     // }
-//     pthread_create(operarias, NULL, operaria("./fileset/teste.txt"), NULL);
-//     //pthread_kill(operaria, SIGCONT);
-// }
+void main()
+{
+    // char file[100] = "teste.txt";
+    // int len = strlen(file) + 1;
+    // write(fd[1], file, len);
+    // ler(arquivo(len));
+    //*pthread_t ranking;
+    pthread_t operarias;
+    // for(int i=0;i<10;i++){
+    // pthread_create(&operarias, NULL, operaria, NULL);
+    // }
+    pthread_create(&operarias, NULL, operaria("teste.txt"), NULL);
+    //*wait(10);
+    //*pthread_create(ranking, NULL, ranking(), NULL);
+    //pthread_kill(operaria, SIGCONT);
+}
