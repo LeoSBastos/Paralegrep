@@ -17,7 +17,5 @@ struct data
 typedef struct data Data;
 
 Data criaDados(int val, char *filename);
-
 void insert(node **tree, Data d);
-
 void print_inorder(node *tree);
