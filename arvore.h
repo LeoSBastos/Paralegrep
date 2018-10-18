@@ -1,21 +1,42 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include <iostream>
+#include <string>
 
-struct bin_tree
+using namespace std;
+
+struct node
 {
-    int data;
-    char *fileName;
-    struct bin_tree *right, *left;
+    int value;
+    string filename;
+    node *left;
+    node *right;
 };
-typedef struct bin_tree node;
 
-struct data
+struct Dados
 {
-    int data;
-    char *filename;
+    int ocorrences;
+    string filename;
 };
-typedef struct data Data;
 
-Data criaDados(int val, char *filename);
-void insert(node **tree, Data d);
-void print_inorder(node *tree);
+class btree
+{
+  public:
+    btree();
+
+    void insert(int key, string filename);
+    void inorder_print();
+
+  private:
+    void insert(int key, string filename, node *leaf);
+    void inorder_print(node *leaf);
+    node *root;
+};
+
+btree::btree();
+
+void btree::insert(int key, string filename, node *leaf);
+
+void btree::insert(int key, string filename);
+
+void btree::inorder_print();
+
+void btree::inorder_print(node *leaf);

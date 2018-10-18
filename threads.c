@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <signal.h>
-#include "arvore.h"
+//#include "arvore.h"
 #define BUFFER_SIZE 1000
 
 int pipeoptoran[2];
@@ -42,11 +42,11 @@ void *operaria(char *filename)
         }
     }
     printf("'%s' foi encontrado %d vezes no arquivo.\n", word, count);
-    Data dados;
-    dados.filename = filename;
-    dados.data = count;
-    printf("%s -> %d\n", dados.filename, dados.data);
-    deucerto = write(pipeoptoran[1], &dados, sizeof(dados));
+    // Data dados;
+    // dados.filename = filename;
+    // dados.data = count;
+    // printf("%s -> %d\n", dados.filename, dados.data);
+    // deucerto = write(pipeoptoran[1], &dados, sizeof(dados));
     if (deucerto != 1)
     {
         perror("write");
@@ -60,20 +60,20 @@ void *operaria(char *filename)
 void *ranking()
 {
     printf("cuzao");
-    int deucerto;
-    node *arvore = NULL;
-    Data dados;
-    deucerto = read(pipeoptoran[0], &dados, sizeof(dados));
-    printf("%d", deucerto);
+    // int deucerto;
+    // node *arvore = NULL;
+    // Data dados;
+    // deucerto = read(pipeoptoran[0], &dados, sizeof(dados));
+    // printf("%d", deucerto);
 
     // if (deucerto != 1)
     // {
     //     perror("read");
     //     exit(3);
     // }
-    printf("%s -> %d", dados.filename, dados.data);
-    insert(&arvore, dados);
-    print_inorder(arvore);
+    // printf("%s -> %d", dados.filename, dados.data);
+    // insert(&arvore, dados);
+    // print_inorder(arvore);
     close(pipeoptoran[0]);
 }
 

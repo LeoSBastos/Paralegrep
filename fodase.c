@@ -54,3 +54,22 @@ int main()
     pthread_join();
     return 0;
 }
+
+// int main()
+// {
+
+//     //btree tree;
+//     btree *tree = new btree();
+//     for (int i = 0; i < 10; i++)
+//     {
+//         Dados d;
+//         d.ocorrences = i + 1;
+//         d.filename = "fodase";
+//         cout << d.filename << endl;
+//         tree->insert(d.ocorrences, d.filename);
+//     }
+
+//     tree->inorder_print();
+
+//     delete tree;
+// }

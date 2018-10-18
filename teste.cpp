@@ -1,18 +1,18 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <string.h>
+#include <cstring>
 #include <thread>
+#include "arvore.cpp"
+#include <unistd.h>
 
-using namespace std;
-
-void operaria(string file_name)
+void operaria(std::string file_name)
 {
-    string str;
-    ifstream file;
-    string path = "./fileset/";
+    std::string str;
+    std::ifstream file;
+    std::string path = "./fileset/";
     path += file_name;
-    string word = "foda";
+    std::string word = "foda";
     int count = 0;
 
     try
@@ -27,21 +27,37 @@ void operaria(string file_name)
 
         file.close();
     }
-    catch (ifstream::failure e)
+    catch (std::ifstream::failure e)
     {
         //cout << "Excessão ocorrida" << e << '\n';
     }
-    cout << "Occurrences of " << word << ": " << count << endl;
+    std::cout << "Occurrences of " << word << ": " << count << std::endl;
 }
 
+void ranking()
+{
+    int count;
+    std::string filename;
+    btree *tree = new btree;
+    for (int i = 0; i < 10; i++)
+    {
+        filename = "fodase";
+        cout << "Digite um numero: ";
+        std::cin >> count;
+        std::cout << filename << "-" << count << std::endl;
+        tree->insert(count, filename);
+    }
+    tree->inorder_print();
+}
 //===============================================
 int main()
 {
 
-    string file_name;
+    std::string file_name;
     file_name = "teste.txt";
-
-    operaria(file_name);
-
+    std::thread t1(operaria, file_name);
+    t1.join();
+    std::thread t2(ranking);
+    t2.join();
     return 0;
 }
