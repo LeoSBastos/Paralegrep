@@ -3,8 +3,10 @@
 #include <fstream>
 #include <cstring>
 #include <thread>
-#include "arvore.cpp"
+#include "arvore.h"
 #include <unistd.h>
+
+Dados d;
 
 void operaria(std::string file_name)
 {
@@ -32,6 +34,9 @@ void operaria(std::string file_name)
         //cout << "Excessão ocorrida" << e << '\n';
     }
     std::cout << "Occurrences of " << word << ": " << count << std::endl;
+    d.filename = file_name;
+    d.ocorrences = count;
+    std::cout << d.filename < << d.ocorrences << std::endl;
 }
 
 void ranking()
@@ -44,7 +49,6 @@ void ranking()
         filename = "fodase";
         cout << "Digite um numero: ";
         std::cin >> count;
-        std::cout << filename << "-" << count << std::endl;
         tree->insert(count, filename);
     }
     tree->inorder_print();

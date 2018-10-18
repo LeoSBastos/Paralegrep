@@ -64,6 +64,7 @@ void btree::insert(int key, string filename, node *leaf)
         {
             leaf->right = new node;
             leaf->right->value = key;
+            leaf->right->filename = filename;
             leaf->right->right = NULL;
             leaf->right->left = NULL;
         }
