@@ -45,7 +45,7 @@ list<Arquivo> lerDiretorio(char* diretorio) {
 	struct dirent *ent;
 	DIR *dir;
 
-	if ((dir = opendir("teste")) != NULL) {
+	if ((dir = opendir(diretorio)) != NULL) {
 		while ((ent = readdir(dir)) != NULL) {
 			if (!(cont < 2)) {
 				Arquivo arq;
