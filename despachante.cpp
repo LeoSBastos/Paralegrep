@@ -9,9 +9,9 @@
 #include <thread>
 
 using namespace std;
-using namespace std::this_thread;
-using namespace std::chrono_literals;
-using std::chrono::system_clock;
+//using namespace std::this_thread;
+//using namespace std::chrono_literals;
+//using std::chrono::system_clock;
 
 struct Arquivo {
 	string nomeArquivo;
@@ -114,21 +114,6 @@ public:
 			return filenames;
 		}
 	}
-private:
 
 };
 
-int main()
-{
-	Despachante despacito2;
-	int i = 0;
-	while (i < 3) {
-		list<string> listaArquicitos2 = despacito2.executarLeitura("./fileset");
-		if (!listaArquicitos2.empty())
-			despacito2.showlistString(listaArquicitos2);
-		else cout << "Nenhum arquivo novo" << endl;
-		sleep_for(5s);
-		++i;
-	}
-	return 0;
-}

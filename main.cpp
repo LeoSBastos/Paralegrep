@@ -6,34 +6,19 @@
 #include <thread>
 #include <unistd.h>
 #include <chrono>
+#include <list>
 #include "ranking.cpp"
-#include "despachante.h"
-#include "ThreadsClass.h"
+#include "despachante.cpp"
+#include "ThreadClass.cpp"
 
 Dados d;
 list<string> filenames;
 list<string> ::iterator iteracito;
-ThreadsClass tc;
 btree tree;
 
 
 using namespace std;
 
-//void despachante() {
-//	Despachante despacito;
-//	while (1) {
-//		list<string> listaArquivos = despacito.executarLeitura("./fileset");
-//		if (!listaArquivos.empty()) {
-//			filenames = listaArquivos;
-//			iteracito = filenames.begin();
-//			while (iteracito != filenames.end()) {
-//				tc.executaThread(*iteracito);
-//			}
-//		}
-//		else cout << "Nenhum arquivo novo" << endl;
-//		this_thread::sleep_for(5s);
-//	}
-//}
 
 void operaria(string file_name)
 {
@@ -41,7 +26,7 @@ void operaria(string file_name)
 	ifstream file;
 	string path = "./fileset/";
 	path += file_name;
-	string word = "foda";
+	string word = "teste";
 	int count = 0;
 
 	try
@@ -60,10 +45,37 @@ void operaria(string file_name)
 	{
 		//cout << "Excessão ocorrida" << e << '\n';
 	}
-	cout << "Occurrences of " << word << ": " << count << endl;
+	cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
 	d.filename = file_name;
 	d.ocorrences = count;
 	tree.lista_atual.push_back(d);
+}
+
+void despachante() {
+	Despachante dsp;
+	while (true) {
+		int numberOfThreads = 0;
+
+		list<string> listaArquivos = dsp.executarLeitura("./fileset");
+		if (!listaArquivos.empty()) {
+
+			//dsp.showlistString(listaArquivos);
+			list <string> ::iterator it;
+			for (it = listaArquivos.begin(); it != listaArquivos.end(); ++it) {
+				while (numberOfThreads > 9) {
+					cout << "Operarias Ocupadas" << endl;
+					std::this_thread::sleep_for(std::chrono::seconds(5));
+				}
+				ThreadClass newThread;
+				numberOfThreads++;
+				numberOfThreads -= newThread.executar(operaria, *it);
+				cout << "OPERARIAS: " << numberOfThreads << endl;
+			}
+		}
+		else cout << "Nenhum arquivo novo" << endl;
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+	}
+
 }
 
 void ranking()
@@ -82,11 +94,16 @@ void ranking()
 int main()
 {
 
-	string file_name;
-	file_name = "teste.txt";
+	/*string file_name;
+	file_name = "arq.txt";
 	thread t1(operaria, file_name);
 	t1.join();
 	thread t2(ranking);
-	t2.join();
+	t2.join();*/
+
+
+	thread despacha(despachante);
+	despacha.join();
+
 	return 0;
 }

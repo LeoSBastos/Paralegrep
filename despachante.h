@@ -5,6 +5,9 @@
 #include <iterator>
 #include <sys/stat.h>
 #include <time.h>
+#include <chrono>
+#include <thread>
+
 
 using namespace std;
 
@@ -24,8 +27,8 @@ public:
 	int listaDiferente(list <Arquivo> g, list <Arquivo> h);
 	list<string> listaArquivosNovos(list <Arquivo> g, list <Arquivo> h);
 	list<Arquivo> lerDiretorio(string locacao);
-	list<string> executarLeitura(string locacao);
-private:
+	list<string> executarLeitura(string loc);
+
 
 };
 
