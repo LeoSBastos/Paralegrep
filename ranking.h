@@ -25,9 +25,8 @@ public:
 	btree();
 	void insert(int key, string filename);
 	void inorder_print();
-	int listaDiferente(list <Dados> g, list <Dados> h);
 	list<Dados> listaDadosNovos(list <Dados> g, list <Dados> h);
-	list<Dados> btree::lerLista(list <Dados> g, list <Dados> h);
+	list<Dados> lerLista(list <Dados> g, list <Dados> h);
 	int lerListaDiferente(list <Dados> g, list <Dados> h);
 
 private:

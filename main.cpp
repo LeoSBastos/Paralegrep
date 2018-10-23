@@ -14,7 +14,10 @@ Dados d;
 list<string> filenames;
 list<string> ::iterator iteracito;
 ThreadsClass tc;
-btree *tree = new btree;
+btree tree;
+
+
+using namespace std;
 
 //void despachante() {
 //	Despachante despacito;
@@ -28,17 +31,17 @@ btree *tree = new btree;
 //			}
 //		}
 //		else cout << "Nenhum arquivo novo" << endl;
-//		std::this_thread::sleep_for(5s);
+//		this_thread::sleep_for(5s);
 //	}
 //}
 
-void operaria(std::string file_name)
+void operaria(string file_name)
 {
-	std::string str;
-	std::ifstream file;
-	std::string path = "./fileset/";
+	string str;
+	ifstream file;
+	string path = "./fileset/";
 	path += file_name;
-	std::string word = "foda";
+	string word = "foda";
 	int count = 0;
 
 	try
@@ -47,43 +50,43 @@ void operaria(std::string file_name)
 
 		while (file >> str)
 		{
-			if (str.find(word) != std::string::npos)
+			if (str.find(word) != string::npos)
 				++count;
 		}
 
 		file.close();
 	}
-	catch (std::ifstream::failure e)
+	catch (ifstream::failure e)
 	{
 		//cout << "Excessão ocorrida" << e << '\n';
 	}
-	std::cout << "Occurrences of " << word << ": " << count << std::endl;
+	cout << "Occurrences of " << word << ": " << count << endl;
 	d.filename = file_name;
 	d.ocorrences = count;
-	tree->lista_atual.push_back(d);
+	tree.lista_atual.push_back(d);
 }
 
 void ranking()
 {
 	while (true) {
-		if (tree->listaDiferente(tree->lista_atual, tree->lista_temp)) {
+		if (tree.lerListaDiferente(tree.lista_atual, tree.lista_temp)) {
 			string filename = d.filename;
 			int count = d.ocorrences;
-			tree->insert(count, filename);
-			tree->inorder_print();
+			tree.insert(count, filename);
+			tree.inorder_print();
 		}
-		std::this_thread::sleep_for(5s);
+		std::this_thread::sleep_for(std::chrono::seconds(5));
 	}
 }
 //===============================================
 int main()
 {
 
-	std::string file_name;
+	string file_name;
 	file_name = "teste.txt";
-	std::thread t1(operaria, file_name);
+	thread t1(operaria, file_name);
 	t1.join();
-	std::thread t2(ranking);
+	thread t2(ranking);
 	t2.join();
 	return 0;
 }
