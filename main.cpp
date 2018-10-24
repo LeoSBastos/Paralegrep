@@ -43,9 +43,9 @@ void operaria(string file_name)
 	}
 	catch (ifstream::failure e)
 	{
-		//cout << "Excessão ocorrida" << e << '\n';
+		//cout << "Excessï¿½o ocorrida" << e << '\n';
 	}
-	cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
+	//cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
 	d.filename = file_name;
 	d.ocorrences = count;
 	tree.lista_atual.push_back(d);
@@ -54,22 +54,17 @@ void operaria(string file_name)
 void despachante() {
 	Despachante dsp;
 	while (true) {
-		int numberOfThreads = 0;
-
+		ThreadClass newThread;
 		list<string> listaArquivos = dsp.executarLeitura("./fileset");
 		if (!listaArquivos.empty()) {
-
-			//dsp.showlistString(listaArquivos);
 			list <string> ::iterator it;
 			for (it = listaArquivos.begin(); it != listaArquivos.end(); ++it) {
-				while (numberOfThreads > 9) {
+				while (newThread.numberOfThread > 9) {
 					cout << "Operarias Ocupadas" << endl;
 					std::this_thread::sleep_for(std::chrono::seconds(5));
 				}
-				ThreadClass newThread;
-				numberOfThreads++;
-				numberOfThreads -= newThread.executar(operaria, *it);
-				cout << "OPERARIAS: " << numberOfThreads << endl;
+				newThread.executar(operaria, *it);
+				//cout << "OPERARIAS: " << newThread.numberOfThread << endl;
 			}
 		}
 		else cout << "Nenhum arquivo novo" << endl;
@@ -81,10 +76,14 @@ void despachante() {
 void ranking()
 {
 	while (true) {
-		if (tree.lerListaDiferente(tree.lista_atual, tree.lista_temp)) {
-			string filename = d.filename;
-			int count = d.ocorrences;
-			tree.insert(count, filename);
+		list<Dados> dadosTemp = tree.lerLista(tree.lista_atual,tree.lista_temp);
+		if (!dadosTemp.empty()) {
+			for(Dados d : dadosTemp){
+				string filename = d.filename;
+				int count = d.ocorrences;
+				tree.insert(count, filename);
+			}
+			tree.lista_temp = tree.lista_atual;
 			tree.inorder_print();
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -99,11 +98,18 @@ int main()
 	thread t1(operaria, file_name);
 	t1.join();
 	thread t2(ranking);
+	
+	
 	t2.join();*/
 
+	vector<thread> threadsPrincipais;
 
-	thread despacha(despachante);
-	despacha.join();
+	threadsPrincipais.push_back(thread(despachante));
+	threadsPrincipais.push_back(thread(ranking));
+	for(thread &t : threadsPrincipais){
+		t.join();
+	}
+	
 
 	return 0;
 }
