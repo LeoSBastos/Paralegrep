@@ -7,7 +7,7 @@
 #include <time.h>
 #include <chrono>
 #include <thread>
-
+#include <cstring>
 using namespace std;
 //using namespace std::this_thread;
 //using namespace std::chrono_literals;
@@ -69,19 +69,20 @@ public:
 		struct dirent *ent;
 		const char* diretorio = locacao.c_str();
 		DIR *dir;
+        //!(cont < 2)||
 		if ((dir = opendir(diretorio)) != NULL) {
 			while ((ent = readdir(dir)) != NULL) {
-				if (!(cont < 2)) {
+                if ( !(!strcmp(ent->d_name, ".") || !strcmp(ent->d_name, "..")) ){
 					Arquivo arq;
-					struct stat attr;
-					stat(ent->d_name, &attr);
+                    struct stat attr;
+				    stat(ent->d_name, &attr);
 					arq.nomeArquivo = ent->d_name;
 					arq.data = ctime(&attr.st_mtime);
 					lista.push_back(arq);
 				}
-				else {
-					cont++;
-				}
+				// else {
+				// 	cont++;
+				// }
 			}
 			closedir(dir);
 		}
@@ -113,7 +114,7 @@ public:
 		else {
 			return filenames;
 		}
-	}
+	};
 
 };
 

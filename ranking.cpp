@@ -22,7 +22,8 @@ class btree
 {
 public:
 	list<Dados> lista_atual, lista_temp, lista_Dados;
-	int primeiraExecucao = 1;
+	bool primeiraExecucao = true;
+    int count;
 	btree();
 	void insert(int key, string filename);
 	void inorder_print();
@@ -94,20 +95,22 @@ void btree::insert(int key, string filename)
 
 void btree::inorder_print()
 {
+    count = 0;
 	inorder_print(root);
 	cout << "\n";
 }
 
 void btree::inorder_print(node *leaf)
 {
-	int count = 0;
 	if (leaf != NULL && count < 10)
 	{
 		inorder_print(leaf->left);
-		cout << leaf->filename << "->" << leaf->value << endl;
-		count++;
-		inorder_print(leaf->right);
-	}
+        if(count < 10){
+            cout << leaf->filename << "->" << leaf->value << endl;
+            count++;
+            inorder_print(leaf->right);
+        }
+    }
 }
 list<Dados> btree::listaDadosNovos(list <Dados> g, list <Dados> h)
 {
@@ -149,6 +152,7 @@ list<Dados> btree::lerLista(list <Dados> g, list <Dados> h) {
 			lista_Dados.push_back(*temp);
 			++temp;
 		}
+        primeiraExecucao = false;
 		return lista_Dados;
 	}
 	else if (lerListaDiferente(g, h)) {

@@ -45,7 +45,7 @@ void operaria(string file_name)
 	{
 		//cout << "Excess�o ocorrida" << e << '\n';
 	}
-	//cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
+	cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
 	d.filename = file_name;
 	d.ocorrences = count;
 	tree.lista_atual.push_back(d);
@@ -61,14 +61,14 @@ void despachante() {
 			for (it = listaArquivos.begin(); it != listaArquivos.end(); ++it) {
 				while (newThread.numberOfThread > 9) {
 					cout << "Operarias Ocupadas" << endl;
-					std::this_thread::sleep_for(std::chrono::seconds(5));
+					this_thread::sleep_for(chrono::seconds(5));
 				}
 				newThread.executar(operaria, *it);
-				//cout << "OPERARIAS: " << newThread.numberOfThread << endl;
+				cout << "OPERARIAS: " << newThread.numberOfThread << endl;
 			}
 		}
 		else cout << "Nenhum arquivo novo" << endl;
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+		this_thread::sleep_for(chrono::seconds(5));
 	}
 
 }
@@ -76,6 +76,7 @@ void despachante() {
 void ranking()
 {
 	while (true) {
+        cout << "Rodando" << endl;
 		list<Dados> dadosTemp = tree.lerLista(tree.lista_atual,tree.lista_temp);
 		if (!dadosTemp.empty()) {
 			for(Dados d : dadosTemp){
@@ -86,7 +87,7 @@ void ranking()
 			tree.lista_temp = tree.lista_atual;
 			tree.inorder_print();
 		}
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+		this_thread::sleep_for(chrono::seconds(5));
 	}
 }
 //===============================================
