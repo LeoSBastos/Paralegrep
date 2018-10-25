@@ -76,7 +76,6 @@ void despachante() {
 void ranking()
 {
 	while (true) {
-        cout << "Rodando" << endl;
 		list<Dados> dadosTemp = tree.lerLista(tree.lista_atual,tree.lista_temp);
 		if (!dadosTemp.empty()) {
 			for(Dados d : dadosTemp){
