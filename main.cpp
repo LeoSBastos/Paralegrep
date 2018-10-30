@@ -8,8 +8,8 @@
 #include <chrono>
 #include <list>
 #include "despachante.cpp"
-#include "ThreadClass.cpp"
-#include "RankingLista.cpp"
+#include "thread_class.cpp"
+#include "ranking.cpp"
 
 list<string> filenames;
 list<string>::iterator iteracito;
