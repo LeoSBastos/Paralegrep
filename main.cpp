@@ -14,6 +14,8 @@
 list<string> filenames;
 list<string>::iterator iteracito;
 Ranking r;
+string palavra;
+
 using namespace std;
 
 void operaria(string file_name)
@@ -22,7 +24,6 @@ void operaria(string file_name)
     ifstream file;
     string path = "./fileset/";
     path += file_name;
-    string word = "Bacon";
     int count = 0;
 
     try
@@ -31,7 +32,7 @@ void operaria(string file_name)
 
         while (file >> str)
         {
-            if (str.find(word) != string::npos)
+            if (str.find(palavra) != string::npos)
                 ++count;
         }
 
@@ -41,7 +42,7 @@ void operaria(string file_name)
     {
         //cout << "Excess�o ocorrida" << e << '\n';
     }
-    cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
+    cout << "Achei " << palavra << ": " << count << " ocorrencias no arquivo " << file_name << endl;
     r.inserir(file_name, count);
 }
 
@@ -83,16 +84,26 @@ void ranking()
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 
-    vector<thread> threadsPrincipais;
-
-    threadsPrincipais.push_back(thread(despachante));
-    threadsPrincipais.push_back(thread(ranking));
-    for (thread &t : threadsPrincipais)
+    if (string(argv[1]) == "integer")
     {
-        t.join();
+        cout << "Falta escrever o que quer buscar, tente ./paralegrep <palavra>" << endl;
+    }
+    else
+    {
+        palavra = argv[1];
+        cout << "Vamos Buscar: " << palavra << endl;
+
+        vector<thread> threadsPrincipais;
+
+        threadsPrincipais.push_back(thread(despachante));
+        threadsPrincipais.push_back(thread(ranking));
+        for (thread &t : threadsPrincipais)
+        {
+            t.join();
+        }
     }
 
     return 0;
