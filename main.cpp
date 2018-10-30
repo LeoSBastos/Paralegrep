@@ -7,15 +7,13 @@
 #include <unistd.h>
 #include <chrono>
 #include <list>
-#include "ranking.cpp"
 #include "despachante.cpp"
 #include "ThreadClass.cpp"
+#include "RankingLista.cpp"
 
-Dados d;
 list<string> filenames;
 list<string>::iterator iteracito;
-btree tree;
-
+Ranking r;
 using namespace std;
 
 void operaria(string file_name)
@@ -44,9 +42,7 @@ void operaria(string file_name)
         //cout << "Excess�o ocorrida" << e << '\n';
     }
     cout << "Achei " << word << ": " << count << " ocorrencias no arquivo " << file_name << endl;
-    d.filename = file_name;
-    d.ocorrences = count;
-    tree.lista_atual.push_back(d);
+    r.inserir(file_name, count);
 }
 
 void despachante()
@@ -80,22 +76,13 @@ void ranking()
 {
     while (true)
     {
-        list<Dados> dadosTemp = tree.lerLista(tree.lista_atual, tree.lista_temp);
-        if (!dadosTemp.empty())
-        {
-            for (Dados d : dadosTemp)
-            {
-                string filename = d.filename;
-                int count = d.ocorrences;
-                tree.insert(count, filename);
-            }
-            tree.lista_temp = tree.lista_atual;
-            tree.inorder_print();
-        }
+        r.ordenar();
+        system("clear");
+        r.exibir();
         this_thread::sleep_for(chrono::seconds(5));
     }
 }
-//===============================================
+
 int main()
 {
 
